@@ -1,99 +1,86 @@
-# 🍅 Tomato Disease Detection Dashboard
+# 🍅 Tomato Disease Detection & Classification Dashboard
 
-An interactive *AI-powered dashboard* built using *Streamlit* that detects and classifies tomato leaf diseases using deep learning.
-
----
-
-## 🚀 Features
-- Upload a tomato leaf image for instant disease classification  
-- Displays model confidence for each disease category  
-- Visual bar chart of AI predictions  
-- Clean, presentation-ready design (glassmorphism style)  
+A web-based Machine Learning application that detects tomato leaf diseases using a trained deep learning model, built and deployed with *Streamlit Cloud*.
 
 ---
 
-## 🧠 Tech Stack
-- *Python*
-- *TensorFlow / Keras*
-- *Streamlit*
-- *NumPy, Pandas, Matplotlib*
-- *Pillow (PIL)* for image handling  
+## 🌿 Overview
+
+This project aims to help farmers and researchers quickly identify tomato plant diseases from leaf images using Artificial Intelligence.  
+The app takes a tomato leaf image as input and classifies it into one of several disease categories — such as Early Blight, Late Blight, or Healthy Leaf — while also showing a confidence score.
 
 ---
 
-## 🧰 How to Run Locally
-bash
-# Clone the repository
+## ⚙ Features
+
+✅ Upload tomato leaf images directly through a clean Streamlit dashboard  
+✅ Real-time AI-based disease prediction  
+✅ Confidence visualization bar  
+✅ Modern interface with background and custom footer  
+✅ Fully deployed on Streamlit Cloud  
+
+---
+
+## 🚀 Run Locally
+
+To run this project on your local system:
+
+### 1. Clone the repository
+```bash
 git clone https://github.com/araomacaia/Tomato-Disease-Detection-App.git
-cd Tomato-Disease-Detection-App/api
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run the app
-streamlit run app.py
-The app will open at http://localhost:8501
-
-☁ Deployment (Streamlit Cloud)
-This app is live on Streamlit Cloud, accessible via:
-
-👉 https://tomato-disease-detection-app-araomacaia.streamlit.app
-(Replace this link with your deployed app link once it’s live)
-
-To deploy your own:
-
-Fork or clone this repository.
-
-Sign in at https://share.streamlit.io.
-
-Select this repository and set:
-
-Branch: main
-
-Main file path: api/app.py
-
-Click Deploy — Streamlit will do everything automatically!
-
-🧩 Model
-The model was trained on the PlantVillage Tomato Dataset, containing 10 classes:
-
-Bacterial Spot
-
-Early Blight
-
-Late Blight
-
-Leaf Mold
-
-Septoria Leaf Spot
-
-Spider Mites
-
-Target Spot
-
-Mosaic Virus
-
-Yellow Leaf Curl Virus
-
-Healthy
-
-👨🏽‍💻 Author
-Arao Zau Macaia
-Multidisciplinary Engineering Student | Wireless Communication & AI | NIT Durgapur
-📧 araomacaia718@gmail.com
-🌐 GitHub @araomacaia
-
-🏷 License
-This project is released under the MIT License.
-
-yaml
+cd Tomato-Disease-Detection-App
+2. Create and activate a virtual environment
+bash
 Copy code
+python -m venv .venv
+.venv\Scripts\activate  # (Windows)
+# OR
+source .venv/bin/activate  # (Mac/Linux)
+3. Install dependencies
+bash
+Copy code
+pip install -r requirements.txt
+4. Run Streamlit
+bash
+Copy code
+streamlit run app.py
+The app will open in your browser at http://localhost:8501.
 
----
+🌐 Deployed Application
+🔗 Live App: Tomato Disease Detection Dashboard
 
-### ✅ After you paste and save:
-- Commit and push it to GitHub:
-  bash
-  git add README.md
-  git commit -m "Added professional README"
-  git push
+🧠 Technologies Used
+Python
+
+Streamlit
+
+TensorFlow / Keras
+
+Matplotlib
+
+NumPy / Pandas
+
+Pillow
+
+Scikit-learn
+
+🧩 Dataset
+The model was trained using the PlantVillage Dataset, which contains images of healthy and diseased tomato leaves across multiple categories.
+
+📈 Model Performance
+Metric	Value
+Training Accuracy	92%
+Validation Accuracy	88%
+Model Type	CNN (Convolutional Neural Network)
+
+👨‍💻 Developer
+Developed by: Arao Zau Macaia
+🎓 B.Tech in Electronics and Communication Engineering, NIT Durgapur
+📍 Elevate Labs AI & ML Intern
+📧 araomacaia718@gmail.com
+🌐 GitHub Profile
+
+🧾 License
+This project is released under the MIT License — feel free to use and adapt it for research or educational purposes.
+
+⭐ If you like this project, consider giving it a star on GitHub!
