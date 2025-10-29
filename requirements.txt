@@ -1,0 +1,6 @@
+streamlit==1.39.0
+pillow
+matplotlib
+pandas
+numpy
+requests
