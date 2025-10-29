@@ -93,9 +93,13 @@ The model was trained using the PlantVillage Dataset, which contains images of h
 ## 👨‍💻 Developer
 
 Developed by: **Arao Zau Macaia**
+
 🎓 B.Tech in Electronics and Communication Engineering, NIT Durgapur
+
 📍 Elevate Labs AI & ML Intern
+
 📧 araomacaia718@gmail.com
+
 🌐 [GitHub Profile](https://github.com/araomacaia)
 
 ---
