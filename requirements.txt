@@ -1,6 +1,6 @@
 streamlit==1.39.0
-pillow
 matplotlib
+pillow
 pandas
 numpy
 requests
