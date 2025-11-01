@@ -18,20 +18,21 @@ BACKGROUND_URL = "https://agroreality.com/wp-content/uploads/2025/04/Commercial-
 logo_url = "https://media.licdn.com/dms/image/v2/D5603AQEUBhLRAYLnrw/profile-displayphoto-crop_800_800/B56ZoajuqlJoAI-/0/1761382170320?e=1763596800&v=beta&t=NmJaKHQIz-C7WzH7SlI-dPmmeOIv7wzQbaGu1nA-j8U"
 
 # -------------------------------------------------------
-# Dynamically locate the model file
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODEL_PATH = os.path.join(BASE_DIR, "tomato_disease_model", "tomato_model.keras")
+# Dynamically locating model file
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(_file_)))
+MODEL_PATH = os.path.join(BASE_DIR, "tomato_disease_model", "tomato_model_fixed.keras")
 
+# Loading the model
 model = tf.keras.models.load_model(MODEL_PATH)
 
-# Define your class labels
+# Defining class names
 CLASS_NAMES = [
     "Tomato___Bacterial_spot",
     "Tomato___Early_blight",
     "Tomato___Late_blight",
     "Tomato___Leaf_Mold",
     "Tomato___Septoria_leaf_spot",
-    "Tomato___Spider_mites_Two-spotted_spider_mite",
+    "Tomato___Spider_mites_Two_spotted_spider_mite",
     "Tomato___Target_Spot",
     "Tomato___Tomato_mosaic_virus",
     "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
@@ -107,10 +108,10 @@ if uploaded_file:
     st.image(img, caption="Uploaded Leaf Image", width=400)
     st.success("✅ Image uploaded successfully!")
 
-    # Run prediction
+    # Running prediction
     label, confidence, probs = predict_image(img)
 
-    # Display result container
+    # Displaying result container
     st.markdown(f"""
     <div style="
         background-color: rgba(255, 255, 255, 0.75);
