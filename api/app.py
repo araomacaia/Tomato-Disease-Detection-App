@@ -2,38 +2,27 @@ import os
 import streamlit as st
 from PIL import Image
 import numpy as np
-import tensorflow as tf
+import tflite_runtime.interpreter as tflite
 
 # -------------------------------------------------------
 # PAGE CONFIG
 # -------------------------------------------------------
-st.set_page_config(
-    page_title="Tomato Disease Detection & Classification Dashboard",
-    layout="centered"
-)
+st.set_page_config(page_title="Tomato Disease Detection Dashboard", layout="centered")
 
 # -------------------------------------------------------
-# STATIC ASSETS
+# Load TFLite model
 # -------------------------------------------------------
-BACKGROUND_URL = "https://agroreality.com/wp-content/uploads/2025/04/Commercial-Tomato-Farm-Photo.jpg"
-logo_url = "https://media.licdn.com/dms/image/v2/D5603AQEUBhLRAYLnrw/profile-displayphoto-crop_800_800/B56ZoajuqlJoAI-/0/1761382170320?e=1763596800&v=beta&t=NmJaKHQIz-C7WzH7SlI-dPmmeOIv7wzQbaGu1nA-j8U"
+MODEL_PATH = os.path.join("tomato_disease_model", "tomato_model_flex.tflite")
 
-# -------------------------------------------------------
-# MODEL LOADING
-# -------------------------------------------------------
-# Locate TFLite model dynamically
-BASE_DIR = os.path.dirname(os.path.abspath(_file_))
-MODEL_PATH = os.path.join(BASE_DIR, "tomato_disease_model", "tomato_model_flex.tflite")
-
-# Loading TFLite model
-interpreter = tf.lite.Interpreter(model_path=MODEL_PATH)
+interpreter = tflite.Interpreter(model_path=MODEL_PATH)
 interpreter.allocate_tensors()
 
-# Getting input/output details
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 
-# Defining class names
+# -------------------------------------------------------
+# Class Names
+# -------------------------------------------------------
 CLASS_NAMES = [
     "Tomato___Bacterial_spot",
     "Tomato___Early_blight",
@@ -48,23 +37,38 @@ CLASS_NAMES = [
 ]
 
 # -------------------------------------------------------
-# PREDICTION FUNCTION
+# Prediction Function
 # -------------------------------------------------------
 def predict_image(image_pil):
-    # Preprocessing image
     img = image_pil.resize((224, 224))
-    img_array = np.expand_dims(np.array(img) / 255.0, axis=0).astype(np.float32)
+    img_array = np.expand_dims(np.array(img, dtype=np.float32) / 255.0, axis=0)
 
-    # Running inference
     interpreter.set_tensor(input_details[0]['index'], img_array)
     interpreter.invoke()
-    predictions = interpreter.get_tensor(output_details[0]['index'])[0]
 
-    # Extracting prediction
+    predictions = interpreter.get_tensor(output_details[0]['index'])[0]
     predicted_class = CLASS_NAMES[np.argmax(predictions)]
     confidence = float(np.max(predictions) * 100)
 
     return predicted_class, confidence, dict(zip(CLASS_NAMES, predictions))
+
+# -------------------------------------------------------
+# STREAMLIT UI
+# -------------------------------------------------------
+st.title("🍅 Tomato Disease Detection")
+st.markdown("Upload a tomato leaf image to identify its health status or disease type.")
+
+uploaded_file = st.file_uploader("Upload a tomato leaf image...", type=["jpg", "jpeg", "png"])
+
+if uploaded_file is not None:
+    image = Image.open(uploaded_file)
+    st.image(image, caption="Uploaded Image", use_container_width=True)
+
+    with st.spinner("Analyzing image..."):
+        predicted_class, confidence, _ = predict_image(image)
+
+    st.success(f"*Prediction:* {predicted_class}")
+    st.info(f"*Confidence:* {confidence:.2f}%")
 # -------------------------------------------------------
 # PAGE STYLE
 # -------------------------------------------------------
