@@ -89,6 +89,8 @@ The model was trained using the PlantVillage Dataset, which contains images of h
 |     Model Type	    | CNN (Convolutional Neural Network) | 
 
 ----
+## Demo Video
+See the demo video through the following link: https://drive.google.com/file/d/17uKnioe37-X6H7La6HSG924p9_Okoy-Y/view?usp=sharing
 
 ## 👨‍💻 Developer
 
