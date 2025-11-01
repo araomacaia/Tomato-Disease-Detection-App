@@ -2,7 +2,7 @@ import os
 import streamlit as st
 from PIL import Image
 import numpy as np
-import tflite_runtime.interpreter as tflite
+from tflite_runtime.interpreter import Interpreter
 
 # -------------------------------------------------------
 # PAGE CONFIG
@@ -10,11 +10,11 @@ import tflite_runtime.interpreter as tflite
 st.set_page_config(page_title="Tomato Disease Detection Dashboard", layout="centered")
 
 # -------------------------------------------------------
-# Load TFLite model
+# Loading TFLite model
 # -------------------------------------------------------
 MODEL_PATH = os.path.join("tomato_disease_model", "tomato_model_flex.tflite")
 
-interpreter = tflite.Interpreter(model_path=MODEL_PATH)
+interpreter = Interpreter(model_path=MODEL_PATH)
 interpreter.allocate_tensors()
 
 input_details = interpreter.get_input_details()
@@ -55,7 +55,7 @@ def predict_image(image_pil):
 # -------------------------------------------------------
 # STREAMLIT UI
 # -------------------------------------------------------
-st.title("🍅 Tomato Disease Detection")
+st.title("Tomato Disease Detection")
 st.markdown("Upload a tomato leaf image to identify its health status or disease type.")
 
 uploaded_file = st.file_uploader("Upload a tomato leaf image...", type=["jpg", "jpeg", "png"])
