@@ -18,36 +18,35 @@ logo_url = "https://media.licdn.com/dms/image/v2/D5603AQEUBhLRAYLnrw/profile-dis
 # -------------------------------------------------------
 # DUMMY MODEL (simulate prediction)
 # -------------------------------------------------------
+# Load the TensorFlow SavedModel format
+MODEL_PATH = "../tomato_disease_model/1"
+model = tf.keras.models.load_model(MODEL_PATH)
+
+# Define your class labels (must match your training)
+CLASS_NAMES = [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___Septoria_leaf_spot",
+    "Tomato___Spider_mites_Two-spotted_spider_mite",
+    "Tomato___Target_Spot",
+    "Tomato___Tomato_mosaic_virus",
+    "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+    "Tomato___healthy"
+]
+
 def predict_image(image_pil):
-    classes = [
-        "Tomato___Bacterial_spot",
-        "Tomato___Early_blight",
-        "Tomato___Late_blight",
-        "Tomato___Leaf_Mold",
-        "Tomato___Septoria_leaf_spot",
-        "Tomato___Spider_mites_Two-spotted_spider_mite",
-        "Tomato___Target_Spot",
-        "Tomato___Tomato_mosaic_virus",
-        "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
-        "Tomato___healthy",
-    ]
+    # Preprocess image exactly as during training
+    img = image_pil.resize((256, 256))
+    img_array = np.expand_dims(np.array(img) / 255.0, axis=0)
 
-    # Pick a random predicted class
-    idx = np.random.randint(0, len(classes))
+    # Predict using your actual trained model
+    predictions = model.predict(img_array)[0]
+    predicted_class = CLASS_NAMES[np.argmax(predictions)]
+    confidence = float(np.max(predictions) * 100)
 
-    # Assign realistic confidence (80–95%)
-    main_conf = np.random.uniform(0.80, 0.95)
-
-    # Distribute remaining probability to other classes
-    remaining = 1.0 - main_conf
-    other_probs = np.random.dirichlet(np.ones(len(classes) - 1)) * remaining
-
-    # Build full probability list
-    probs = np.zeros(len(classes))
-    probs[idx] = main_conf
-    probs[np.arange(len(classes)) != idx] = other_probs
-
-    return classes[idx], float(main_conf * 100), dict(zip(classes, probs))
+    return predicted_class, confidence, dict(zip(CLASS_NAMES, predictions))
 # -------------------------------------------------------
 # PAGE STYLE
 # -------------------------------------------------------
