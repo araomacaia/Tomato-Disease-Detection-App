@@ -19,7 +19,7 @@ logo_url = "https://media.licdn.com/dms/image/v2/D5603AQEUBhLRAYLnrw/profile-dis
 
 # -------------------------------------------------------
 # Dynamically locate the model file
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(_file_)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MODEL_PATH = os.path.join(BASE_DIR, "tomato_disease_model", "tomato_model.keras")
 
 model = tf.keras.models.load_model(MODEL_PATH)
