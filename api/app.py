@@ -17,8 +17,10 @@ BACKGROUND_URL = "https://agroreality.com/wp-content/uploads/2025/04/Commercial-
 logo_url = "https://media.licdn.com/dms/image/v2/D5603AQEUBhLRAYLnrw/profile-displayphoto-crop_800_800/B56ZoajuqlJoAI-/0/1761382170320?e=1763596800&v=beta&t=NmJaKHQIz-C7WzH7SlI-dPmmeOIv7wzQbaGu1nA-j8U"
 
 # -------------------------------------------------------
-# Load your real trained model
-MODEL_PATH = "../tomato_disease_model/tomato_model.keras"
+# Dynamically locate the model file
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(_file_)))
+MODEL_PATH = os.path.join(BASE_DIR, "tomato_disease_model", "tomato_model.keras")
+
 model = tf.keras.models.load_model(MODEL_PATH)
 
 # Define your class labels
@@ -36,7 +38,7 @@ CLASS_NAMES = [
 ]
 
 def predict_image(image_pil):
-    img = image_pil.resize((224, 224))  # Use your real training input size
+    img = image_pil.resize((224, 224))
     img_array = np.expand_dims(np.array(img) / 255.0, axis=0)
     predictions = model.predict(img_array)[0]
     predicted_class = CLASS_NAMES[np.argmax(predictions)]
