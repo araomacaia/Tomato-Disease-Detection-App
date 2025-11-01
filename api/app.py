@@ -17,13 +17,11 @@ BACKGROUND_URL = "https://agroreality.com/wp-content/uploads/2025/04/Commercial-
 logo_url = "https://media.licdn.com/dms/image/v2/D5603AQEUBhLRAYLnrw/profile-displayphoto-crop_800_800/B56ZoajuqlJoAI-/0/1761382170320?e=1763596800&v=beta&t=NmJaKHQIz-C7WzH7SlI-dPmmeOIv7wzQbaGu1nA-j8U"
 
 # -------------------------------------------------------
-# DUMMY MODEL (simulate prediction)
-# -------------------------------------------------------
-# Load the TensorFlow SavedModel format
-MODEL_PATH = "../tomato_disease_model/1"
+# Load your real trained model
+MODEL_PATH = "../tomato_disease_model/tomato_model.keras"
 model = tf.keras.models.load_model(MODEL_PATH)
 
-# Define your class labels (must match your training)
+# Define your class labels
 CLASS_NAMES = [
     "Tomato___Bacterial_spot",
     "Tomato___Early_blight",
@@ -38,15 +36,11 @@ CLASS_NAMES = [
 ]
 
 def predict_image(image_pil):
-    # Preprocess image exactly as during training
-    img = image_pil.resize((256, 256))
+    img = image_pil.resize((224, 224))  # Use your real training input size
     img_array = np.expand_dims(np.array(img) / 255.0, axis=0)
-
-    # Predict using your actual trained model
     predictions = model.predict(img_array)[0]
     predicted_class = CLASS_NAMES[np.argmax(predictions)]
     confidence = float(np.max(predictions) * 100)
-
     return predicted_class, confidence, dict(zip(CLASS_NAMES, predictions))
 # -------------------------------------------------------
 # PAGE STYLE
