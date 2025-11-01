@@ -2,14 +2,15 @@ import os
 import streamlit as st
 from PIL import Image
 import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
 import tensorflow as tf
 
 # -------------------------------------------------------
 # PAGE CONFIG
 # -------------------------------------------------------
-st.set_page_config(page_title="Tomato Disease Detection & Classification Dashboard", layout="centered")
+st.set_page_config(
+    page_title="Tomato Disease Detection & Classification Dashboard",
+    layout="centered"
+)
 
 # -------------------------------------------------------
 # STATIC ASSETS
@@ -18,12 +19,19 @@ BACKGROUND_URL = "https://agroreality.com/wp-content/uploads/2025/04/Commercial-
 logo_url = "https://media.licdn.com/dms/image/v2/D5603AQEUBhLRAYLnrw/profile-displayphoto-crop_800_800/B56ZoajuqlJoAI-/0/1761382170320?e=1763596800&v=beta&t=NmJaKHQIz-C7WzH7SlI-dPmmeOIv7wzQbaGu1nA-j8U"
 
 # -------------------------------------------------------
-# Dynamically locating model file
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(_file_)))
-MODEL_PATH = os.path.join(BASE_DIR, "tomato_disease_model", "tomato_model_fixed.keras")
+# MODEL LOADING
+# -------------------------------------------------------
+# Locate TFLite model dynamically
+BASE_DIR = os.path.dirname(os.path.abspath(_file_))
+MODEL_PATH = os.path.join(BASE_DIR, "tomato_disease_model", "tomato_model_flex.tflite")
 
-# Loading the model
-model = tf.keras.models.load_model(MODEL_PATH)
+# Loading TFLite model
+interpreter = tf.lite.Interpreter(model_path=MODEL_PATH)
+interpreter.allocate_tensors()
+
+# Getting input/output details
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
 
 # Defining class names
 CLASS_NAMES = [
@@ -39,12 +47,23 @@ CLASS_NAMES = [
     "Tomato___healthy"
 ]
 
+# -------------------------------------------------------
+# PREDICTION FUNCTION
+# -------------------------------------------------------
 def predict_image(image_pil):
+    # Preprocessing image
     img = image_pil.resize((224, 224))
-    img_array = np.expand_dims(np.array(img) / 255.0, axis=0)
-    predictions = model.predict(img_array)[0]
+    img_array = np.expand_dims(np.array(img) / 255.0, axis=0).astype(np.float32)
+
+    # Running inference
+    interpreter.set_tensor(input_details[0]['index'], img_array)
+    interpreter.invoke()
+    predictions = interpreter.get_tensor(output_details[0]['index'])[0]
+
+    # Extracting prediction
     predicted_class = CLASS_NAMES[np.argmax(predictions)]
     confidence = float(np.max(predictions) * 100)
+
     return predicted_class, confidence, dict(zip(CLASS_NAMES, predictions))
 # -------------------------------------------------------
 # PAGE STYLE
