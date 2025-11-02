@@ -1,3 +1,16 @@
+<!-- PROJECT STATUS BADGES -->
+<p align="center">
+
+  <img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge" alt="status"/>
+  <img src="https://img.shields.io/badge/Flask%20API-Ready-blue?style=for-the-badge" alt="flask api"/>
+  <img src="https://img.shields.io/badge/Cloud%20Deployment-Pending-yellow?style=for-the-badge" alt="cloud deployment"/>
+  <img src="https://img.shields.io/badge/React%20Native-Next%20Phase-orange?style=for-the-badge" alt="mobile app"/>
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="license"/>
+
+</p>
+
+---
+
 # 🍅 Tomato Disease Detection & Classification Dashboard
 
 A web-based Machine Learning application that detects tomato leaf diseases using a trained deep learning model, built and deployed with *Streamlit Cloud*.
